@@ -18,7 +18,25 @@ const Page = db.define("page", {
   status: {
     type: Sequelize.ENUM("open", "closed"),
   },
-});
+},
+//   { hooks: {
+//     beforeValidate: function (page) {
+//       if (page.title) {
+//         return (page.slug = page.title.replace(/\s/g,'_').replace(/\W/g, ''))
+//       } else {
+//         return (slug = Math.random().toString(36).substring(2, 7))
+//       }
+//     }
+//   }
+// }
+);
+
+Page.beforeValidate((pageInstance, optionsObject) => {
+  function generateSlug (title) {
+  return title.replace(/\s+/g, '_').replace(/\W/g, '');
+}
+  pageInstance.slug = generateSlug(pageInstance.title)
+})
 
 //users table
 const User = db.define("user", {

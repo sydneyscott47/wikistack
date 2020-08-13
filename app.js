@@ -16,11 +16,17 @@ app.use(express.urlencoded({ extended: false }));
 // middleware + css/html style
 app.use(express.static(__dirname + "/public"));
 
-//homepage
+// import routes from wiki.js and users.js and use these for /posts
+const wikiRoutes = require('./routes/wiki');
+app.use('/wiki', wikiRoutes);
+
+const userRoutes = require('./routes/users');
+app.use('/users', userRoutes);
+
+// redirect homepage to /wiki
 app.get("/", (req, res) => {
-  const layout = require("./views/layout");
-  res.send(layout(""));
-});
+  res.redirect("/wiki");
+})
 
 const init = async () => {
   try {
